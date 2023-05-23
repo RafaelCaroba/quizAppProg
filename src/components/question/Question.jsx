@@ -1,17 +1,27 @@
-import React from 'react'
-import { useContext } from 'react'
-import { QuizContext } from '../../context/quiz'
+import React from "react";
+import { useContext } from "react";
+import { QuizContext } from "../../context/quiz";
+
+import "./Question.css";
 
 const Question = () => {
-    const [quizState, dispatch] = useContext(QuizContext);
-
-    console.log(quizState);
+  const [quizState, dispatch] = useContext(QuizContext);
+  const currentQuestion = quizState.questions[quizState.currentQuestion];
 
   return (
-    <div>
-        <p>Pergunta de 0 a 10</p>
+    <div className="question">
+      <p>
+        Pergunta {quizState.currentQuestion + 1} de {quizState.questions.length}
+      </p>
+      <h2>{currentQuestion.question}</h2>
+      <div className="options-container">
+        <p>Opções</p>
+        <button onClick={() => dispatch({ type: "CHANGE_QUESTION" })}>
+          Continuar
+        </button>
+      </div>
     </div>
-  )
-}
+  );
+};
 
-export default Question
+export default Question;

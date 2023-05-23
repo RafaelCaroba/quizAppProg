@@ -6,19 +6,43 @@ const STAGES = ["Start", "Playing", "End"];
 const initialState = {
   gameStage: STAGES[0],
   questions,
+  currentQuestion: 0,
 };
 
 const quizReducer = (state, action) => {
-    // console.log(state, action);
+  console.log(state, action);
 
   switch (action.type) {
     case "CHANGE_STATE":
-      // console.log('mudou!!!!');
       return {
-      // SPREAD OPERATOR: serve para trazer o State atual do Context, e essa sintaxe permite modificar os atribustos necessários
+        // SPREAD OPERATOR: serve para trazer o State atual do Context, e essa sintaxe permite modificar os atribustos necessários
 
         ...state,
         gameStage: STAGES[1],
+      };
+
+    case "REORDER_QUESTIONS":
+      const reorderedQuestions = questions.sort(() => {
+        return Math.random() - 0.5;
+      });
+
+      return {
+        ...state,
+        questions: reorderedQuestions,
+      };
+
+    case "CHANGE_QUESTION":
+      const nextQuestion = state.currentQuestion + 1;
+      let endGame = false
+
+      if (!questions[nextQuestion]) {
+        endGame = true
+      }
+
+      return {
+        ...state,
+        currentQuestion: nextQuestion,
+        gameStage: endGame ? STAGES [2] : state.gameStage
       };
 
     default:
